@@ -3,6 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -99,12 +100,12 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-6 text-center">
-          <a
+          <Link
             href="/"
             className="text-sm text-primary-600 hover:text-primary-700"
           >
             ← Volver al inicio
-          </a>
+          </Link>
         </div>
       </div>
     </div>

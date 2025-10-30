@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700">
@@ -9,12 +11,12 @@ export default function Home() {
           Tu página de enlaces personalizada
         </p>
         <div className="space-x-4 animate-slide-up">
-          <a
+          <Link
             href="/admin/login"
             className="inline-block bg-white text-primary-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
           >
             Iniciar Sesión
-          </a>
+          </Link>
         </div>
       </div>
     </div>

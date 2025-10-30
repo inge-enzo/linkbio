@@ -1,9 +1,9 @@
-import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/lib/auth';
+import Link from 'next/link';
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     redirect('/admin/login');
@@ -20,13 +20,13 @@ export default async function DashboardPage() {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">{session.user.email}</span>
-              <a
+              <span className="text-sm text-gray-600">{session.user?.email}</span>
+              <Link
                 href="/api/auth/signout"
                 className="text-sm text-red-600 hover:text-red-700"
               >
                 Cerrar Sesión
-              </a>
+              </Link>
             </div>
           </div>
         </div>
