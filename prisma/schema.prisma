@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  profile      Profile?
+  socialLinks  SocialLink[]
+  products     Product[]
+  contents     Content[]
+  pageViews    PageView[]
+  searchQueries SearchQuery[]
+  clickEvents  ClickEvent[]
+}
+
+model Profile {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  name        String
+  description String?
+  photoUrl    String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SocialLink {
+  id       String @id @default(cuid())
+  userId   String
+  platform String
+  url      String
+  order    Int    @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  price       Float?
+  link        String
+  imageUrl    String?
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Content {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  link        String
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  userId    String
+  timestamp DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([timestamp])
+}
+
+model SearchQuery {
+  id        String   @id @default(cuid())
+  userId    String
+  query     String
+  type      String
+  timestamp DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([timestamp])
+}
+
+model ClickEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  itemType  String   // 'product', 'content', 'social'
+  itemId    String
+  timestamp DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([itemType, itemId])
+  @@index([timestamp])
+}
